@@ -1,0 +1,124 @@
+class ClaimService {
+
+    LinkedList<Claim> claims = new LinkedList<>();
+
+    // Add Normal Claim
+    void addClaim(int claimId, String customerName) {
+        claims.addLast(new Claim(claimId, customerName));
+    }
+
+    // Add Urgent Claim
+    void addUrgentClaim(int claimId, String customerName) {
+        claims.addFirst(new Claim(claimId, customerName));
+    }
+
+    // Process First Claim
+    void processClaim() {
+
+        if (claims.isEmpty()) {
+            System.out.println("No claims available.\n");
+            return;
+        }
+
+        Claim claim = claims.removeFirst();
+
+        System.out.println("Processing Claim...");
+        claim.display();
+    }
+
+    // Cancel Latest Claim
+    void cancelLatestClaim() {
+
+        if (claims.isEmpty()) {
+            System.out.println("No claims available.\n");
+            return;
+        }
+
+        Claim claim = claims.removeLast();
+
+        System.out.println("Cancelled Claim...");
+        claim.display();
+    }
+
+    // Search Claim
+    void searchClaim(int claimId) {
+
+        boolean found = false;
+
+        for (Claim claim : claims) {
+
+            if (claim.claimId == claimId) {
+
+                System.out.println("Claim Found");
+                claim.display();
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Claim not found.\n");
+        }
+    }
+
+    // Display All Claims
+    void showPendingClaims() {
+
+        if (claims.isEmpty()) {
+            System.out.println("No pending claims.\n");
+            return;
+        }
+
+        System.out.println("Pending Claims");
+
+        for (Claim claim : claims) {
+            claim.display();
+        }
+    }
+
+    // Display Queue Information
+    void showQueueInfo() {
+
+        if (claims.isEmpty()) {
+            System.out.println("No pending claims.\n");
+            return;
+        }
+
+        System.out.println("Next Claim    : " + claims.getFirst().claimId);
+        System.out.println("Latest Claim  : " + claims.getLast().claimId);
+        System.out.println("Total Claims  : " + claims.size());
+        System.out.println();
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        ClaimService service = new ClaimService();
+
+        // Normal Claims
+        service.addClaim(101, "Amit");
+        service.addClaim(102, "Neha");
+        service.addClaim(103, "Rahul");
+
+        // Urgent Claim
+        service.addUrgentClaim(999, "VIP Customer");
+
+        service.showPendingClaims();
+
+        service.showQueueInfo();
+
+        service.processClaim();
+
+        service.processClaim();
+
+        service.cancelLatestClaim();
+
+        service.showPendingClaims();
+
+        service.searchClaim(102);
+
+        service.searchClaim(500);
+    }
+}
